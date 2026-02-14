@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
+
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
-import java.time.LocalDate;
 
 class StudentControllerTest {
 
@@ -26,6 +27,7 @@ class StudentControllerTest {
 
     @Test
     void testCreateStudent() {
+
         StudentDTO dto = new StudentDTO();
         dto.setFirstName("Valbona");
         dto.setLastName("Krasniqi");
@@ -35,35 +37,13 @@ class StudentControllerTest {
 
         Student student = new Student();
         student.setId(1);
-        student.setFirstName("@SpringBootTest\n" +
-                "@AutoConfigureMockMvc\n" +
-                "class TeacherControllerIntegrationTest {\n" +
-                "\n" +
-                "    @Autowired\n" +
-                "    private MockMvc mockMvc;\n" +
-                "\n" +
-                "    @Test\n" +
-                "    void testCreateTeacherIntegration() throws Exception {\n" +
-                "        String teacherJson = \"\"\"\n" +
-                "            {\n" +
-                "                \"firstName\": \"Valbona\",\n" +
-                "                \"lastName\": \"Krasniqi\",\n" +
-                "                \"email\": \"valbona.krasniqi@hotmail.com\",\n" +
-                "                \"phoneNumber\": \"1234567890\"\n" +
-                "            }\n" +
-                "        \"\"\";\n" +
-                "\n" +
-                "        mockMvc.perform(post(\"/api/teachers\")\n" +
-                "                .contentType(MediaType.APPLICATION_JSON)\n" +
-                "                .content(teacherJson))\n" +
-                "                .andExpect(status().isCreated())\n" +
-                "                .andExpect(jsonPath(\"$.firstName\").value(\"Alice\"));\n" +
-                "    }\n" +
-                "}\n");
+        student.setFirstName("Valbona");
+        student.setLastName("Krasniqi");
 
         when(studentService.createStudent(dto)).thenReturn(student);
 
         Student result = studentController.create(dto);
+
         assertNotNull(result);
         assertEquals("Valbona", result.getFirstName());
         verify(studentService, times(1)).createStudent(dto);

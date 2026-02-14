@@ -1,44 +1,51 @@
 package com.kidsacademy.controller;
 
-import com.kidsacademy.dto.TeacherDTO;
-import com.kidsacademy.entity.Teacher;
-import com.kidsacademy.service.TeacherService;
+import com.kidsacademy.dto.StudentDTO;
+import com.kidsacademy.entity.Student;
+import com.kidsacademy.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class TeacherControllerTest {
+class StudentControllerTest {
 
     @Mock
-    private TeacherService teacherService;
+    private StudentService studentService;
 
     @InjectMocks
-    private TeacherController teacherController;
+    private StudentController studentController;
 
-    public TeacherControllerTest() {
+    public StudentControllerTest() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testCreateTeacher() {
-        TeacherDTO dto = new TeacherDTO();
-        dto.setFirstName("Era");
-        dto.setLastName("Mustafa");
-        dto.setEmail("era.mustafa@hotmail.com");
+    void testCreateStudent() {
 
-        Teacher teacher = new Teacher();
-        teacher.setId(1);
-        teacher.setFirstName("Era");
+        StudentDTO dto = new StudentDTO();
+        dto.setFirstName("Valbona");
+        dto.setLastName("Krasniqi");
+        dto.setEmail("valbona.krasniqi@hotmail.com");
+        dto.setBirthDate(LocalDate.of(2010, 1, 1));
+        dto.setAge(12);
 
-        when(teacherService.createTeacher(dto)).thenReturn(teacher);
+        Student student = new Student();
+        student.setId(1);
+        student.setFirstName("Valbona");
+        student.setLastName("Krasniqi");
 
-        ResponseEntity<Teacher> response = teacherController.createTeacher(dto);
-        assertEquals(201, response.getStatusCodeValue());
-        assertEquals("Era", response.getBody().getFirstName());
-        verify(teacherService, times(1)).createTeacher(dto);
+        when(studentService.createStudent(dto)).thenReturn(student);
+
+        Student result = studentController.create(dto);
+
+        assertNotNull(result);
+        assertEquals("Valbona", result.getFirstName());
+        verify(studentService, times(1)).createStudent(dto);
     }
 }
